@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Voygent • Family Heritage Demo (Interactive)</title>
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#121821; --text:#e9eef5;
+    --muted:#9fb3c8; --accent:#14b8a6; --accent-2:#0e7490;
+    --bubble:#172131; --user:#1d2a3b; --chip:#233249; --ok:#3ddc97; --warn:#f6c667;
+    --line:#223046;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,Segoe UI,Inter,Roboto,Helvetica,Arial}
+  .app{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:320px 1fr;gap:10px;min-height:100vh}
+  .sidebar{background:var(--panel);padding:16px;position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid var(--line)}
+  .brand{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  .brand h1{font-size:16px;margin:0}
+  .panel{background:var(--bubble);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+  .panel h3{margin:0 0 8px 0;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .metric{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin:4px 0}
+  .bar{height:8px;background:#101622;border-radius:6px;overflow:hidden;margin-top:6px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{background:var(--chip);border:1px solid #2b3b54;border-radius:999px;padding:6px 10px}
+  .chat{padding:16px 16px 90px;overflow:auto;max-height:100vh}
+  .msg{display:flex;gap:10px;margin:10px 0;align-items:flex-start}
+  .msg .avatar{width:30px;height:30px;border-radius:50%;flex:0 0 auto}
+  .agent .avatar{background:var(--accent)}
+  .user .avatar{background:#6d7993}
+  .bubble{background:var(--bubble);border:1px solid var(--line);border-radius:12px;padding:12px;max-width:780px}
+  .user .bubble{background:var(--user)}
+  .sys{opacity:.75;font-style:italic}
+  .widget{background:#0f1622;border:1px dashed #2b3b54;border-radius:12px;padding:10px;margin-top:8px}
+  input[type="text"], input[type="url"], select{
+    background:#0e1520;color:var(--text);border:1px solid #2b3b54;border-radius:8px;padding:8px;width:100%
+  }
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .btn{background:var(--accent);color:#00130f;border:0;border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer}
+  .btn.secondary{background:#24334a;color:var(--text);border:1px solid #2b3b54}
+  .btn.ghost{background:transparent;border:1px solid #2b3b54;color:var(--text)}
+  .hint{color:var(--muted);font-size:13px;margin-top:6px}
+  .day{border-left:3px solid #2b3b54;padding-left:10px;margin:10px 0}
+  .why{color:var(--muted);font-size:13px;margin-top:4px}
+  .statusbar{position:fixed;left:320px;right:0;bottom:0;background:rgba(16,23,34,.9);backdrop-filter:saturate(140%) blur(8px);
+    border-top:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:10px 16px}
+  .dotline{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px}
+  .dotline i{width:8px;height:8px;border-radius:50%;background:#334563}
+  .dotline .on{background:var(--ok)}
+  .cost{margin-left:auto;color:var(--muted);font-size:13px}
+  .kbd{background:#0e1520;border:1px solid #2b3b54;border-radius:6px;padding:2px 6px;font-size:12px}
+  .option{border:1px solid #2b3b54;border-radius:12px;padding:10px;margin:8px 0}
+  .badge{display:inline-block;background:#112233;border:1px solid #2b3b54;color:var(--muted);padding:3px 8px;border-radius:999px;font-size:12px}
+  .ok{color:var(--ok)}
+  .sep{border-top:1px solid var(--line);margin:8px 0}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="dot"></div><h1>Voygent • Agent Console</h1></div>
+
+    <div class="panel">
+      <h3>Trip Status</h3>
+      <div class="metric"><span>Phase</span><span id="phase">Draft</span></div>
+      <div class="bar"><i id="bar" style="width:10%"></i></div>
+      <div class="metric"><span>Tokens (in/out)</span><span id="tok">0 / 0</span></div>
+      <div class="metric"><span>Est. Cost</span><span id="cost">$0.000</span></div>
+    </div>
+
+    <div class="panel">
+      <h3>Template</h3>
+      <div class="chips">
+        <div class="chip">Family Heritage</div>
+        <div class="chip">Rail-first</div>
+        <div class="chip">Car for rural</div>
+        <div class="chip">Comfort</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Controls</h3>
+      <div class="btns">
+        <button class="btn secondary" id="nextBtn">Next ▶</button>
+        <button class="btn ghost" id="autoBtn">Autoplay</button>
+        <button class="btn ghost" id="resetBtn">Reset</button>
+      </div>
+      <div class="hint">Tip: Click the buttons inside the chat, or step with <span class="kbd">Next</span>.</div>
+    </div>
+
+    <div class="panel">
+      <h3>Validation</h3>
+      <div class="chips" id="valChips">
+        <div class="chip">Pending…</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="chat" id="chat"></main>
+</div>
+
+<div class="statusbar">
+  <div class="dotline"><i id="dDot" class="on"></i> Draft</div>
+  <div class="dotline"><i id="vDot"></i> Validate</div>
+  <div class="dotline"><i id="aDot"></i> Assemble</div>
+  <div class="dotline"><i id="rDot"></i> Ready</div>
+  <div class="cost" id="costline">Tokens: 0 / 0 • Est: $0.000</div>
+</div>
+
+<script>
+/* ======= STATE & HELPERS ======= */
+const PRICE_IN = 0.001;   // $ per 1k input tokens (sim)
+const PRICE_OUT = 0.002;  // $ per 1k output tokens (sim)
+
+const state = {
+  step: 'intro',
+  intake: {
+    surnames: 'McLeod, Roberts',
+    places: 'Skye; Wales/unknown',
+    immigration: '1880–1920',
+    ancestryUrl: 'https://www.ancestry.com/sharing/abc123',
+    adults: 2, children: 0,
+    duration: 10, month: 'June',
+    transport: { rail:true, car:true, driverGuide:true },
+    interests: ['Cathedrals','Scenic hikes ≤2h','Waterfalls','Food markets','Live folk'],
+    budget: 'Comfort',
+    addons: ['Genealogist','Parish/Records Day','Village Photo Session']
+  },
+  option: null,
+  party: { group: 2, solo: 0 },
+  tokensIn: 0, tokensOut: 0, cost: 0
+};
+
+const chat = document.getElementById('chat');
+const bar  = document.getElementById('bar');
+const tok  = document.getElementById('tok');
+const cost = document.getElementById('cost');
+const phase= document.getElementById('phase');
+const costline = document.getElementById('costline');
+const dots = {
+  draft: document.getElementById('dDot'),
+  validate: document.getElementById('vDot'),
+  assemble: document.getElementById('aDot'),
+  ready: document.getElementById('rDot')
+};
+
+function add(role, html){
+  const m = document.createElement('div');
+  m.className = 'msg '+role;
+  m.innerHTML = `<div class="avatar"></div><div class="bubble">${html}</div>`;
+  chat.appendChild(m);
+  chat.scrollTop = chat.scrollHeight;
+}
+function setPhase(name, pct){
+  phase.textContent = name;
+  bar.style.width = pct+'%';
+  Object.values(dots).forEach(d=>d.classList.remove('on'));
+  if(name.startsWith('Draft')) dots.draft.classList.add('on');
+  if(name.startsWith('Validate')) dots.validate.classList.add('on');
+  if(name.startsWith('Assemble')) dots.assemble.classList.add('on');
+  if(name.startsWith('Ready')) dots.ready.classList.add('on');
+}
+function bumpTokens(inTok, outTok){
+  state.tokensIn += inTok;
+  state.tokensOut += outTok;
+  const addCost = (inTok/1000)*PRICE_IN + (outTok/1000)*PRICE_OUT;
+  state.cost += addCost;
+  tok.textContent = `${state.tokensIn.toLocaleString()} / ${state.tokensOut.toLocaleString()}`;
+  cost.textContent = `$${state.cost.toFixed(3)}`;
+  costline.textContent = `Tokens: ${state.tokensIn.toLocaleString()} / ${state.tokensOut.toLocaleString()} • Est: $${state.cost.toFixed(3)}`;
+}
+function resetDemo(){
+  chat.innerHTML = '';
+  state.step = 'intro';
+  state.option = null;
+  state.tokensIn = 0; state.tokensOut = 0; state.cost = 0;
+  tok.textContent = '0 / 0';
+  cost.textContent = '$0.000';
+  costline.textContent = 'Tokens: 0 / 0 • Est: $0.000';
+  setPhase('Draft', 10);
+  renderIntro();
+}
+
+/* ======= RENDER STEPS ======= */
+function renderIntro(){
+  add('agent', `
+    <div><span class="badge">Family Heritage Journey</span></div>
+    Let’s get the essentials. <em>(Step 1/3)</em>
+    <div class="widget">
+      <div class="row">
+        <div><label>Surnames</label><input id="x_surnames" type="text" value="${state.intake.surnames}"></div>
+        <div><label>Known places</label><input id="x_places" type="text" value="${state.intake.places}"></div>
+      </div>
+      <div class="row">
+        <div><label>Immigration window</label>
+          <select id="x_imm">
+            <option ${state.intake.immigration==='1880–1920'?'selected':''}>1880–1920</option>
+            <option ${state.intake.immigration==='Before 1860'?'selected':''}>Before 1860</option>
+            <option ${state.intake.immigration==='Unknown'?'selected':''}>Unknown</option>
+          </select>
+        </div>
+        <div><label>Genealogy link</label><input id="x_url" type="url" value="${state.intake.ancestryUrl}"></div>
+      </div>
+      <div class="btns"><button class="btn secondary" data-action="intake1">Continue</button></div>
+    </div>
+  `);
+}
+function renderPartyDates(){
+  add('agent', `
+    Great. Who’s traveling + when? <em>(Step 2/3)</em>
+    <div class="widget">
+      <div class="row">
+        <div><label>Adults</label><input id="x_adults" type="text" value="${state.intake.adults}"></div>
+        <div><label>Children</label><input id="x_kids" type="text" value="${state.intake.children}"></div>
+      </div>
+      <div class="row">
+        <div><label>Duration (days)</label><input id="x_dur" type="text" value="${state.intake.duration}"></div>
+        <div><label>Month</label><select id="x_month">
+          <option ${state.intake.month==='May'?'selected':''}>May</option>
+          <option ${state.intake.month==='June'?'selected':''}>June</option>
+          <option ${state.intake.month==='September'?'selected':''}>September</option>
+        </select></div>
+      </div>
+      <div class="btns"><button class="btn secondary" data-action="intake2">Continue</button></div>
+    </div>
+  `);
+}
+function renderStyleBudget(){
+  add('agent', `
+    Travel style & budget? <em>(Step 3/3)</em>
+    <div class="widget">
+      <div class="chips">
+        <div class="chip">🚆 Rail-first</div>
+        <div class="chip">🚗 Car OK (rural)</div>
+        <div class="chip">🧭 Driver-guide OK</div>
+      </div>
+      <div class="chips" style="margin-top:6px;">
+        <div class="chip">Cathedrals</div>
+        <div class="chip">Scenic hikes ≤2h</div>
+        <div class="chip">Waterfalls</div>
+        <div class="chip">Food markets</div>
+        <div class="chip">Live folk music</div>
+      </div>
+      <div class="row" style="margin-top:6px;">
+        <div><label>Budget style</label><div class="chips"><div class="chip">Comfort</div></div></div>
+        <div><label>Add-ons</label><div class="chips">
+            <div class="chip">Genealogist</div>
+            <div class="chip">Parish/Records Day</div>
+            <div class="chip">Village Photo Session</div>
+        </div></div>
+      </div>
+      <div class="btns"><button class="btn secondary" data-action="generate">Generate Options</button></div>
+    </div>
+  `);
+}
+function renderOptions(){
+  add('agent', `
+    I’ve skimmed your Ancestry summary: <b>${state.intake.surnames}</b> (${state.intake.places}). Rail-first, short scenic hikes, real music pubs (no tourist shows).
+    <div class="option">
+      <b>Option A — Skye & Highlands + Welsh Dip (10d)</b>
+      <div class="day"><b>Days 1–2 • Edinburgh</b> – St Giles’ Cathedral; local folk session.<div class="why">Why: easy arrival; real music; zero driving.</div></div>
+      <div class="day"><b>Day 3 • Inverness</b> – Highland Archive appt; Falls of Foyers loop.<div class="why">Why: records + gentle waterfall hike.</div></div>
+      <div class="day"><b>Days 4–6 • Skye</b> – Dunvegan Castle (Clan McLeod), Coral Beach; Quiraing viewpoints; Talisker Bay.<div class="why">Why: high-yield scenery & clan roots.</div></div>
+      <div class="day"><b>Day 7 • Glencoe → Oban</b> – Three Sisters views; harbor trad set.<div class="why">Why: scenic link + live music.</div></div>
+      <div class="day"><b>Day 8–9 • Cardiff + Parish Day</b> – Record Office; Tintern Abbey & churchyard; pub lunch.<div class="why">Why: Roberts hypothesis test without relocation.</div></div>
+      <div class="day"><b>Day 10 • London</b> – Tower early (optional); Borough Market at opening.</div>
+      <div class="hint">Smart Splurges: ✨ Skye private 90‑min boat • ✨ Early‑entry Crown Jewels (small‑group)</div>
+    </div>
+    <div class="option">
+      <b>Option B — Roberts‑Forward: London/Kew + Wales & Borders (10d)</b>
+      <div class="day"><b>Days 1–2 • London</b> – Westminster; Kew Archives intro; indie folk venue.</div>
+      <div class="day"><b>Days 3–4 • Cardiff & Vale</b> – Glamorgan RO; coastal walk ≤90m.</div>
+      <div class="day"><b>Day 5 • Welsh Parish Day</b> – Tintern Abbey + parish stop; churchwarden email prepped.</div>
+      <div class="day"><b>Days 6–7 • Bath & Lacock</b> – Roman Baths timed; Lacock Abbey cloisters.</div>
+      <div class="day"><b>Day 8 • Winchester</b> – Cathedral; water meadows walk.</div>
+      <div class="day"><b>Days 9–10 • London</b> – Tower early (optional); markets at opening.</div>
+      <div class="hint">Smart Splurges: ✨ Private 2‑hr cathedral docent • ✨ Classic afternoon tea (iconic)</div>
+    </div>
+    <div class="btns">
+      <button class="btn" data-action="chooseA">Choose A</button>
+      <button class="btn secondary" data-action="chooseB">Choose B</button>
+      <button class="btn ghost" data-action="tweak">Tweak</button>
+    </div>
+    <div class="hint">Reply <span class="kbd">A</span> or <span class="kbd">B</span>, or click <b>Tweak</b>.</div>
+  `);
+}
+function renderPostChoice(){
+  const addPhoto = state.intake.addons.includes('Village Photo Session');
+  add('agent', `
+    Great — validating hours & drive times${addPhoto?'; adding the village photo session':''}…<br>
+    <span class="ok">Validated:</span> Kew/Record Office typical hours ✔︎ · Parish mid‑week ✔︎ (Wed closures noted) · Drives ≤ ~2h ✔︎
+  `);
+  document.getElementById('valChips').innerHTML = `
+    <div class="chip">Kew Hours ✔︎</div>
+    <div class="chip">Parish mid‑week ✔︎</div>
+    <div class="chip">Drives ≤ ~2h ✔︎</div>`;
+}
+function renderFinalPlan(){
+  add('agent', `
+    <b>McLeod Roots + Welsh Dip — 10 Days (${state.intake.budget})</b><br>
+    <span class="badge">Share link:</span> voygent.app/t/7c2… &nbsp; <span class="badge">PDF:</span> Download
+    <div class="day"><b>Days 1–2 • Edinburgh</b> — St Giles’; real folk pub; Old Town photo walk</div>
+    <div class="day"><b>Day 3 • Inverness</b> — Archive appt; Falls of Foyers loop</div>
+    <div class="day"><b>Day 4 • Skye (Dunvegan)</b> — Clan seat${state.intake.addons.includes('Village Photo Session')?' • <b>Village Photo Session</b> (golden hour)':''}</div>
+    <div class="day"><b>Day 5 • Skye (Quiraing/Talisker)</b> — Viewpoint spur; beach walk; seafood market dinner</div>
+    <div class="day"><b>Day 6 • Skye buffer</b> — weather flex</div>
+    <div class="day"><b>Day 7 • Glencoe → Oban</b> — viewpoints; harbor trad set</div>
+    <div class="day"><b>Day 8 • Rail to Cardiff</b> — evening promenade</div>
+    <div class="day"><b>Day 9 • Welsh Parish Day</b> — Tintern Abbey; churchyard; pub lunch</div>
+    <div class="day"><b>Day 10 • London</b> — Tower early (optional); Borough Market at opening</div>
+    <div class="hint">Budget bands (2 adults): Comfort stays w/ 1 boutique night; rail + 2 short car days; mostly free/low‑cost activities. Optional splurges: boat (Skye), early‑entry Tower.</div>
+    <div class="btns">
+      <button class="btn secondary" data-action="share">Share</button>
+      <button class="btn" data-action="quote">Get Firm Quote (Free)</button>
+      <button class="btn ghost" data-action="tweak">Tweak</button>
+    </div>
+  `);
+}
+function renderShareReplies(){
+  add('agent', `3 people replied “I’m in!” via your share: <b>Aunt Moira</b>, <b>Cousin Liam</b>, <b>Nora</b>. Add to this trip or quote separately?`);
+  add('user', `Add Moira + Liam. Nora wants a solo quote.`);
+  add('agent', `Updated party: <b>4 travelers</b> (2 rooms) + <b>1 solo</b> itinerary. I’ll propagate budget bands and clone a solo plan for Nora.`);
+}
+function renderReferProAsk(){
+  add('agent', `
+    Would you like a trusted travel professional to prepare a <b>free firm quote</b> for these plans?
+    <div class="btns"><button class="btn" data-action="referYes">Yes, refer</button><button class="btn secondary" data-action="referNo">Not now</button></div>
+  `);
+}
+function renderSentToPro(){
+  add('agent', `
+    <span class="badge">Sent to Pro Queue</span> Your plan and booking items are now with a Voygent pro. You’ll receive quotes here.
+    <div class="sep"></div>
+    <b>Pro View</b>: flights (optional), 2× double rooms (Comfort + 1 boutique), short car hires (Inverness, Cardiff), ✨ Early‑entry Tower, ✨ Skye 90‑min boat, ✨ Village Photo Session, rail segments.
+  `);
+}
+function renderQuotesReady(){
+  add('agent', `
+    <b>Firm Quotes Ready</b><br>
+    • Group of 4 — view & approve<br>
+    • Nora (solo) — view & approve (boat removed, photo kept)<br>
+    <div class="btns"><button class="btn" data-action="approveGroup">Approve Group</button>
+    <button class="btn secondary" data-action="approveNora">Approve Nora</button></div>
+  `);
+}
+function renderFinalThanks(){
+  add('agent', `
+    Thank you! The travel pro will proceed to booking and send deposit links. You’ll see status, payments, and updates here. 🎉
+  `);
+}
+
+/* ======= EVENT DELEGATION ======= */
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('[data-action]');
+  if(!btn) return;
+  const action = btn.getAttribute('data-action');
+
+  if(action==='intake1'){
+    // collect values
+    state.intake.surnames = document.getElementById('x_surnames').value.trim();
+    state.intake.places   = document.getElementById('x_places').value.trim();
+    state.intake.immigration = document.getElementById('x_imm').value;
+    state.intake.ancestryUrl = document.getElementById('x_url').value.trim();
+    add('user','Submitted.');
+    state.step = 'party';
+    setPhase('Draft', 20);
+    bumpTokens(200,150);
+    renderPartyDates();
+  }
+
+  if(action==='intake2'){
+    state.intake.adults = parseInt(document.getElementById('x_adults').value||'2',10);
+    state.intake.children= parseInt(document.getElementById('x_kids').value||'0',10);
+    state.intake.duration= parseInt(document.getElementById('x_dur').value||'10',10);
+    state.intake.month   = document.getElementById('x_month').value;
+    add('user','Submitted.');
+    state.step = 'style';
+    setPhase('Draft', 30);
+    bumpTokens(200,150);
+    renderStyleBudget();
+  }
+
+  if(action==='generate'){
+    add('user','Generate options.');
+    setPhase('Draft', 45);
+    bumpTokens(600,500);
+    // show options
+    state.step = 'options';
+    renderOptions();
+  }
+
+  if(action==='chooseA' || action==='chooseB'){
+    state.option = (action==='chooseA'?'A':'B');
+    add('user', state.option === 'A' ? 'A (add village photo session)' : 'B (docent at cathedral)');
+    setPhase('Validate', 65);
+    bumpTokens(800,600);
+    // Mark validation chips
+    renderPostChoice();
+    // Assemble
+    setTimeout(()=>{
+      setPhase('Assemble', 80);
+      bumpTokens(200,400);
+      renderFinalPlan();
+      setPhase('Ready', 100);
+    }, 500);
+  }
+
+  if(action==='tweak'){
+    add('user', 'Tweak: keep hikes ≤ 60 minutes, add one more live music night.');
+    // pretend to regenerate quickly
+    setPhase('Draft', 55);
+    bumpTokens(300,250);
+    add('agent','Tweak applied. Updated Skye day to viewpoint-only and added Oban folk set.');
+  }
+
+  if(action==='share'){
+    add('user','Share');
+    renderShareReplies();
+  }
+
+  if(action==='quote'){
+    add('user','Get firm quote.');
+    renderReferProAsk();
+  }
+
+  if(action==='referYes'){
+    add('user','Yes, refer.');
+    renderSentToPro();
+    // After a short delay, quotes arrive
+    setTimeout(renderQuotesReady, 800);
+  }
+  if(action==='referNo'){
+    add('user','Not now.');
+  }
+
+  if(action==='approveGroup'){
+    add('user','Approve group');
+  }
+  if(action==='approveNora'){
+    add('user','Approve Nora');
+    renderFinalThanks();
+  }
+});
+
+/* ======= TOP CONTROLS ======= */
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  // Advance sensibly depending on last visible button
+  const nextClickable = chat.querySelector('.msg:last-of-type [data-action]') ||
+                        chat.querySelector('[data-action]');
+  if(nextClickable) nextClickable.click();
+});
+
+let autoplayTimer = null;
+document.getElementById('autoBtn').addEventListener('click', ()=>{
+  if(autoplayTimer){ clearInterval(autoplayTimer); autoplayTimer=null; return; }
+  autoplayTimer = setInterval(()=>{
+    const btn = chat.querySelector('.msg:last-of-type [data-action]') ||
+                chat.querySelector('[data-action]');
+    if(btn) btn.click(); else clearInterval(autoplayTimer);
+  }, 700);
+});
+document.getElementById('resetBtn').addEventListener('click', resetDemo);
+
+/* ======= INIT ======= */
+setPhase('Draft', 10);
+renderIntro();
+</script>
+</body>
+</html>
+
