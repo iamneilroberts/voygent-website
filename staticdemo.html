@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Voygent • Family Heritage Flow (Static Transcript)</title>
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#121821; --text:#e9eef5;
+    --muted:#9fb3c8; --accent:#14b8a6; --accent2:#0e7490;
+    --bubble:#172131; --user:#1d2a3b; --chip:#233249; --ok:#3ddc97; --warn:#f6c667;
+    --line:#223046; --bglite:#0f1622;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,Segoe UI,Inter,Roboto,Helvetica,Arial}
+  header{padding:14px 16px;border-bottom:1px solid var(--line);background:var(--panel);display:flex;align-items:center;gap:10px}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  h1{font-size:16px;margin:0}
+  .wrap{max-width:980px;margin:0 auto;padding:16px}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  .legend span{font-size:12px;color:var(--muted)}
+  .layout{display:grid;grid-template-columns:1fr 260px;gap:16px}
+  .sidebar{position:sticky;top:12px;height:fit-content}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+  .panel h3{margin:0 0 6px;color:var(--muted);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{background:var(--chip);border:1px solid #2b3b54;border-radius:999px;padding:6px 10px;font-size:13px}
+  .bar{height:8px;background:#101622;border-radius:6px;overflow:hidden;margin-top:6px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:100%}
+  .chat{background:transparent}
+  .msg{display:flex;gap:10px;margin:12px 0}
+  .avatar{width:30px;height:30px;border-radius:50%}
+  .voy .avatar{background:var(--accent)}
+  .usr .avatar{background:#6d7993}
+  .bubble{background:var(--bubble);border:1px solid var(--line);border-radius:12px;padding:12px;max-width:680px}
+  .usr .bubble{background:var(--user)}
+  .badge{display:inline-block;background:#112233;border:1px solid var(--line);color:var(--muted);padding:3px 8px;border-radius:999px;font-size:12px}
+  .widget{background:var(--bglite);border:1px dashed #2b3b54;border-radius:12px;padding:10px;margin-top:8px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .label{font-size:12px;color:var(--muted);margin-bottom:2px}
+  .field{background:#0e1520;border:1px solid #2b3b54;border-radius:8px;padding:6px 8px}
+  .option{border:1px solid #2b3b54;border-radius:12px;padding:10px;margin:8px 0}
+  .day{border-left:3px solid #2b3b54;padding-left:10px;margin:10px 0}
+  .why{color:var(--muted);font-size:13px;margin-top:4px}
+  .interstitial{background:#0f1520;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:10px;margin:16px 0}
+  .interstitial h4{margin:0 0 6px;font-size:13px;color:var(--accent)}
+  .muted{color:var(--muted)}
+  .ok{color:var(--ok)}
+  .warn{color:var(--warn)}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .fakebtn{background:#24334a;border:1px solid #2b3b54;color:var(--text);border-radius:10px;padding:6px 10px;font-size:13px}
+  .money{color:#8fe5c3;font-weight:600}
+</style>
+</head>
+<body>
+<header><div class="dot"></div><h1>Voygent • Family Heritage Journey — Static Flow</h1></header>
+<div class="wrap">
+  <div class="legend">
+    <span>🟢 Voygent (assistant) bubbles on the left</span>
+    <span>🔵 Traveler (user) bubbles on the right</span>
+    <span>🟧 Interstitial cards show actions outside LibreChat (validation, publish, sharing, pro dashboard, quotes)</span>
+  </div>
+
+  <div class="layout">
+    <main class="chat">
+
+      <!-- Interstitial: Ad click / Landing -->
+      <div class="interstitial">
+        <h4>Ad → Landing</h4>
+        <div class="muted">Traveler clicks an ad and lands on <code>/chat?template=heritage</code> with the Family Heritage path preselected.</div>
+      </div>
+
+      <!-- Intro intake -->
+      <div class="msg voy">
+        <div class="avatar"></div>
+        <div class="bubble">
+          <div><span class="badge">Family Heritage Journey</span></div>
+          Let’s get the essentials. <em>(Step 1/3)</em>
+          <div class="widget">
+            <div class="row">
+              <div>
+                <div class="label">Surnames</div>
+                <div class="field">McLeod, Roberts</div>
+              </div>
+              <div>
+                <div class="label">Known places</div>
+                <div class="field">Skye; Wales/unknown</div>
+              </div>
+            </div>
+            <div class="row" style="margin-top:8px;">
+              <div>
+                <div class="label">Immigration window</div>
+                <div class="field">1880–1920</div>
+              </div>
+              <div>
+                <div class="label">Genealogy link</div>
+                <div class="field">https://www.ancestry.com/sharing/abc123</div>
+              </div>
+            </div>
+          </div>
+          <div class="muted" style="margin-top:6px;">(Voygent will parse the Ancestry summary lightly for surnames/places.)</div>
+        </div>
+      </div>
+      <div class="msg usr">
+        <div class="avatar"></div>
+        <div class="bubble">Submitted.</div>
+      </div>
+
+      <div class="msg voy">
+        <div class="avatar"></div>
+        <div class="bubble">
+          Great. Who’s traveling + when? <em>(Step 2/3)</em>
+          <div class="widget">
+            <div class="row">
+              <div>
+                <div class="label">Adults</div><div class="field">2</div>
+              </div>
+              <div>
+                <div class="label">Children</div><div class="field">0</div>
+              </div>
+            </div>
+            <div class="row" style="margin-top:8px;">
+              <div>
+                <div class="label">Duration (days)</div><div class="field">10</div>
+              </div>
+              <div>
+                <div class="label">Month</div><div class="field">June</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="msg usr">
+        <div class="avatar"></div>
+        <div class="bubble">Submitted.</div>
+      </div>
+
+      <div class="msg voy">
+        <div class="avatar"></div>
+        <div class="bubble">
+          Travel style & budget? <em>(Step 3/3)</em>
+          <div class="widget">
+            <div class="chips">
+              <div class="chip">🚆 Rail-first</div>
+              <div class="chip">🚗 Car OK (rural)</div>
+              <div class="chip">🧭 Driver-guide OK</div>
+            </div>
+            <div class="chips" style="margin-top:6px;">
+              <div class="chip">Cathedrals</div>
+              <div class="chip">Scenic hikes ≤2h</div>
+              <div class="chip">Waterfalls</div>
+              <div class="chip">Food markets</div>
+              <div class="chip">Live folk music</div>
+            </div>
+            <div class="chips" style="margin-top:6px;">
+              <div class="chip">Budget: Comfort</div>
+              <div class="chip">Add-ons: Genealogist</div>
+              <div class="chip">Parish/Records Day</div>
+              <div class="chip">Village Photo Session</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="msg usr">
+        <div class="avatar"></div>
+        <div class="bubble">Generate options.</div>
+      </div>
+
+      <!-- Options -->
+      <div class="msg voy">
+        <div class="avatar"></div>
+        <div class="bubble">
+          I’ve skimmed your Ancestry summary: <b>McLeod</b> (Skye/Highlands), <b>Roberts</b> (likely Welsh). Rail-first, short scenic hikes, real pubs (no tourist shows).  
+          Here are two concise routes; choose <b>A</b> or <b>B</b>.
+          <div class="option">
+            <b>Option A — Skye & Highlands + Welsh Dip (10d)</b>
+            <div class="day"><b>Days 1–2 • Edinburgh</b> – St Giles’ Cathedral; local folk session.<div class="why">Why: easy arrival; real music; zero driving.</div></div>
+            <div class="day"><b>Day 3 • Inverness</b> – Highland Archive appt; Falls of Foyers loop.<div class="why">Why: records + gentle waterfall hike.</div></div>
+            <div class="day"><b>Days 4–6 • Skye</b> – Dunvegan Castle (Clan McLeod), Coral Beach; Quiraing viewpoints; Talisker Bay.<div class="why">Why: high-yield scenery & clan roots.</div></div>
+            <div class="day"><b>Day 7 • Glencoe → Oban</b> – Three Sisters views; harbor trad set.</div>
+            <div class="day"><b>Day 8–9 • Cardiff + Parish Day</b> – Record Office; Tintern Abbey & churchyard; pub lunch.<div class="why">Why: Roberts hypothesis test without relocation.</div></div>
+            <div class="day"><b>Day 10 • London</b> – Tower early (optional); Borough Market at opening.</div>
+            <div class="muted">Smart Splurges (great value, great commission): ✨ Skye private 90‑min boat • ✨ Early‑entry Crown Jewels (small‑group)</div>
+          </div>
+          <div class="option">
+            <b>Option B — Roberts‑Forward: London/Kew + Wales & Borders (10d)</b>
+            <div class="day"><b>Days 1–2 • London</b> – Westminster; Kew Archives intro; indie folk venue.</div>
+            <div class="day"><b>Days 3–4 • Cardiff & Vale</b> – Glamorgan RO; coastal walk ≤90m.</div>
+            <div class="day"><b>Day 5 • Welsh Parish Day</b> – Tintern Abbey + parish stop; churchwarden email prepped.</div>
+            <div class="day"><b>Days 6–7 • Bath & Lacock</b> – Roman Baths timed; Lacock Abbey cloisters.</div>
+            <div class="day"><b>Day 8 • Winchester</b> – Cathedral; water meadows walk.</div>
+            <div class="day"><b>Days 9–10 • London</b> – Tower early (optional); markets at opening.</div>
+            <div class="muted">Smart Splurges: ✨ Private 2‑hr cathedral docent • ✨ Classic afternoon tea (iconic)</div>
+          </div>
+        </div>
+      </div>
+      <div class="msg usr">
+        <div class="avatar"></div>
+        <div class="bubble">A (add village photo session)</div>
+      </div>
+
+      <!-- Interstitial: Validation -->
+      <div class="interstitial">
+        <h4>Validation (outside chat, 2nd provider)</h4>
+        <div class="muted">
+          Hours & distance checks from cached sources + quick web fetch.
+          <ul>
+            <li class="ok">Kew/Record Office: typical hours & booking patterns OK</li>
+            <li class="ok">Parish offices: mid‑week availability OK (Wed closures noted)</li>
+            <li class="ok">Drive segments capped ≤ ~2h</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Final plan -->
+      <div class="msg voy">
+        <div class="avatar"></div>
+        <div class="bubble">
+          <b>McLeod Roots + Welsh Dip — 10 Days (Comfort)</b><br>
+          <span class="badge">Share link:</span> voygent.app/t/7c2… &nbsp; <span class="badge">PDF:</span> Download
+          <div class="day"><b>Days 1–2 • Edinburgh</b> — St Giles’; real folk pub; Old Town photo walk</div>
+          <div class="day"><b>Day 3 • Inverness</b> — Archive appt; Falls of Foyers loop</div>
+          <div class="day"><b>Day 4 • Skye (Dunvegan)</b> — Clan seat • <b>Village Photo Session</b> (golden hour)</div>
+          <div class="day"><b>Day 5 • Skye (Quiraing/Talisker)</b> — Viewpoint spur; beach walk; seafood market dinner</div>
+          <div class="day"><b>Day 6 • Skye buffer</b> — weather flex</div>
+          <div class="day"><b>Day 7 • Glencoe → Oban</b> — viewpoints; harbor trad set</div>
+          <div class="day"><b>Day 8 • Rail to Cardiff</b> — evening promenade</div>
+          <div class="day"><b>Day 9 • Welsh Parish Day</b> — Tintern Abbey; churchyard; pub lunch</div>
+          <div class="day"><b>Day 10 • London</b> — Tower early (optional); Borough Market at opening</div>
+          <div class="muted">Budget bands (2 adults): Comfort stays w/ 1 boutique night; rail + 2 short car days; mostly free/low‑cost activities. Optional splurges listed above.</div>
+          <div class="btnrow"><span class="fakebtn">Share</span><span class="fakebtn">Get Firm Quote (Free)</span><span class="fakebtn">Tweak</span></div>
+        </div>
+      </div>
+
+      <!-- Interstitial: Publish -->
+      <div class="interstitial">
+        <h4>Publish (outside chat)</h4>
+        <div class="muted">Template engine renders HTML → pushed to GitHub Pages.<br>
+        Public itinerary URL: <code>voygent.app/t/7c2…</code></div>
+      </div>
+
+      <!-- Interstitial: Family share thread -->
+      <div class="interstitial">
+        <h4>Family Text & Email Thread (outside chat)</h4>
+        <div class="muted">
+          <b>Aunt Moira:</b> “This looks perfect. I’m in.”<br>
+          <b>Cousin Liam:</b> “Count me in for Skye + the boat.”<br>
+          <b>Nora:</b> “I want to go but solo room please.”
+        </div>
+      </div>
+
+      <!-- Update party -->
+      <div class="msg voy">
+        <div class="avatar"></div>
+        <div class="bubble">
+          3 people replied “I’m in!”: <b>Aunt Moira</b>, <b>Cousin Liam</b>, <b>Nora</b>.  
+          Add to this trip or quote separately?
+        </div>
+      </div>
+      <div class="msg usr">
+        <div class="avatar"></div>
+        <div class="bubble">Add Moira + Liam. Nora wants a solo quote.</div>
+      </div>
+      <div class="msg voy">
+        <div class="avatar"></div>
+        <div class="bubble">
+          Updated party: <b>4 travelers</b> (2 rooms) + <b>1 solo</b> itinerary.  
+          I’ll propagate lodging bands and clone a solo plan for Nora.
+        </div>
+      </div>
+
+      <!-- Refer to pro -->
+      <div class="msg voy">
+        <div class="avatar"></div>
+        <div class="bubble">
+          Would you like a trusted travel professional to prepare a <b>free firm quote</b> for these plans?
+          <div class="btnrow"><span class="fakebtn">Yes, refer</span><span class="fakebtn">Not now</span></div>
+        </div>
+      </div>
+      <div class="msg usr">
+        <div class="avatar"></div>
+        <div class="bubble">Yes, refer.</div>
+      </div>
+
+      <!-- Interstitial: Pro dashboard -->
+      <div class="interstitial">
+        <h4>Travel Pro Dashboard (outside chat)</h4>
+        <div class="muted">
+          <b>New Request:</b> “McLeod Roots + Welsh Dip — 4 travelers + 1 solo”<br>
+          <b>Booking Items:</b> flights (optional), 2× double rooms (Comfort + 1 boutique), short car hires (Inverness, Cardiff), ✨ Early‑entry Tower, ✨ Skye 90‑min boat, ✨ Village Photo Session, rail segments.<br>
+          <b>Commission hints:</b> small‑group Tower • boat • photo session (high CSAT, good margin).
+        </div>
+      </div>
+
+      <!-- Interstitial: Pro imports quote -->
+      <div class="interstitial">
+        <h4>Pro Action (outside chat)</h4>
+        <div class="muted">
+          Pro books via their systems, then imports confirmation refs & prices.  
+          Voygent assembles a bookable proposal automatically.
+        </div>
+      </div>
+
+      <!-- Quotes delivered -->
+      <div class="msg voy">
+        <div class="avatar"></div>
+        <div class="bubble">
+          <b>Firm Quotes Ready</b><br>
+          • Group of 4 — view & approve<br>
+          • Nora (solo) — view & approve (boat removed, photo kept)<br>
+          <div class="btnrow"><span class="fakebtn">Approve Group</span><span class="fakebtn">Open Nora Quote</span></div>
+        </div>
+      </div>
+      <div class="msg usr">
+        <div class="avatar"></div>
+        <div class="bubble">Approve group; Nora OK.</div>
+      </div>
+
+      <!-- Interstitial: Payments & commissions -->
+      <div class="interstitial">
+        <h4>Booking, Payments & Commissions (outside chat)</h4>
+        <div class="muted">
+          Deposit links sent to travelers; statuses update in real time.  
+          Pro dashboard shows line‑item commissions and payment schedule.  
+          <span class="money">Projected commission: healthy uplift from Tower early‑entry, boat, and photo session.</span>
+        </div>
+      </div>
+
+      <!-- Wrap-up -->
+      <div class="msg voy">
+        <div class="avatar"></div>
+        <div class="bubble">
+          Thank you! Your travel pro will finalize bookings. You’ll see updates, payments, and documents here. 🎉
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Static sidebar summary -->
+    <aside class="sidebar">
+      <div class="panel">
+        <h3>Flow Phases</h3>
+        <div class="chips">
+          <div class="chip">Draft ✓</div>
+          <div class="chip">Validate ✓</div>
+          <div class="chip">Assemble ✓</div>
+          <div class="chip">Ready ✓</div>
+        </div>
+        <div class="bar" style="margin-top:8px"><i></i></div>
+        <div class="muted" style="margin-top:6px">This static demo shows the full lifecycle with outside‑chat interstitials.</div>
+      </div>
+      <div class="panel">
+        <h3>Template & Style</h3>
+        <div class="chips">
+          <div class="chip">Family Heritage</div>
+          <div class="chip">Rail‑first</div>
+          <div class="chip">Car for rural</div>
+          <div class="chip">Comfort</div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Commission Boosters</h3>
+        <div class="chips">
+          <div class="chip">Early‑entry Tower</div>
+          <div class="chip">Skye boat (90‑min)</div>
+          <div class="chip">Village photo session</div>
+          <div class="chip">Cathedral docent</div>
+          <div class="chip">Classic tea</div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Why Pros Love This</h3>
+        <div class="muted">
+          • Traveler & AI do the heavy lifting.<br>
+          • Pro imports confirmations once; Voygent builds the proposal.<br>
+          • Upsells are natural, valued, and commission‑friendly.<br>
+          • Dashboard tracks quotes, bookings, payments, commissions.
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</body>
+</html>
+
